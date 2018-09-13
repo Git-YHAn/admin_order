@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yang.server.dao.UserInfoDao">
+    <resultMap id="BaseResultMap" type="com.yang.server.entity.UserInfo">
+        <id column="USER_ID" property="userId"></id>
+        <result column="USERNAME" property="username"></result>
+        <result column="PASSWORD" property="password"></result>
+        <result column="REALNAME" property="realname"></result>
+        <result column="PHONE_NUM" property="phoneNum"></result>
+        <result column="EMAIL" property="email"></result>
+        <result column="IS_ACTIVE" property="isActive"></result>
+    </resultMap>
+
+    <select id="getLoginInfo" resultType="com.yang.server.entity.UserInfo">
+        SELECT * FROM USER
+    </select>
+
+    <select id="getUserInfoByName" resultType="com.yang.server.entity.UserInfo" parameterType="string">
+        SELECT * FROM USER WHERE USERNAME = #{username}
+    </select>
+
+    <select id="getUserInfoById" resultType="com.yang.server.entity.UserInfo" parameterType="long">
+        SELECT * FROM USER WHERE USER_ID = #{userId}
+    </select>
+
+    <select id="getUserInfoDim" resultMap="BaseResultMap">
+        SELECT * FROM USER WHERE 1 = 1
+        <if test="username != null and username != ''">
+            AND USERNAME LIKE "%"#{username}"%"
+        </if>
+    </select>
+
+    <insert id="addUserInfo" parameterType="com.yang.server.entity.UserInfo">
+        insert into USER
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username != null">
+                USERNAME,
+            </if>
+            <if test="password != null">
+                PASSWORD,
+            </if>
+            <if test="realname != null">
+                REALNAME,
+            </if>
+            <if test="phoneNum != null">
+                PHONE_NUM,
+            </if>
+            <if test="email != null">
+                EMAIL,
+            </if>
+            <if test="isActive != null">
+                IS_ACTIVE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="realname != null">
+                #{realname,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneNum != null">
+                #{phoneNum,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="isActive != null">
+                #{isActive,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateUserInfo" parameterType="com.yang.server.entity.UserInfo">
+        update USER
+        <set>
+            <if test="password != null">
+                PASSWORD = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="realname != null">
+                REALNAME = #{realname,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneNum != null">
+                PHONE_NUM = #{phoneNum,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                EMAIL = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="isActive != null">
+                IS_ACTIVE = #{isActive,jdbcType=INTEGER},
+            </if>
+        </set>
+        where USER_ID = #{userId,jdbcType=BIGINT}
+    </update>
+
+    <delete id="deletedUserInfo" parameterType="long">
+        DELETE FROM USER WHERE USER_ID = #{userId, jdbcType=BIGINT}
+    </delete>
+</mapper>

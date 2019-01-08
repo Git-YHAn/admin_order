@@ -4,9 +4,9 @@ server:
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://192.168.50.37:3306/yang_demo?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    url: jdbc:mysql://47.112.25.22:3306/ldq?useUnicode=true&characterEncoding=UTF-8&useSSL=false
     username: root
-    password: 1q2w3e4r..
+    password: admin123
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
